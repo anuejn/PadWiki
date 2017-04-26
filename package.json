@@ -1,9 +1,6 @@
 {
-	"name": "ep_PLUGINNAME",
-	"version": "0.0.1",
-	"description": "DESCRIPTION",
-	"author": "USERNAME (REAL NAME) <MAIL@EXAMPLE.COM>",
-	"contributors": [],
-	"dependencies": {"MODULE": "0.3.20"},
-	"engines": { "node": ">= 0.6.0"}
+  "name": "ep_padwiki",
+  "version": "0.0.1",
+  "description": "A simple sidebar for etherpad lite which adds wiki-like functionality.",
+  "author": "nein (Jaro Habiger) <jarohabiger@googlemail.com>"
 }

@@ -1,0 +1,106 @@
+<!DOCTYE html>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PadWiki</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+aside {
+        background: #282828;
+        color: #ebdbb2;
+}
+
+iframe {
+    border: none;
+    overflow: hidden;
+}
+
+/* desktop rules */
+@media(min-width: 600px) {
+    aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+
+        color: #fff;
+    }
+
+    aside > header {
+        position: relative;
+        width: 100%;
+
+        padding: 20px;
+        margin-bottom: 20px;
+
+        background-color: #2980B9;
+
+        text-align: center;
+    }
+
+    aside > header > h1 {
+
+    }
+
+
+    aside > header > h2 {
+        color: rgba(255,255,255,0.3);
+        font-size: 14px;
+        
+        padding-top: 10px;
+        font-weight: normal;
+    }
+
+    aside > header > input[type=search] {
+        width: 200px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+
+        border-radius: 100px;
+        border: none;
+        padding: 5px;
+        padding-left: 15px;
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        padding-left: 250px;
+    }
+}
+
+/* mobile rules */
+@media(max-width: 600px) {
+
+}
+
+</style>
+
+<!-- the pad listing sidebar -->
+<aside>
+    <header>
+       <h1>Kassel Entrüsten</h1>
+       <h2>PadWiki</h2>
+       <input type="search" placeholder="search...">
+    </header>
+    <!-- TOOD: insert the pad listing here -->
+    <!-- develop crazy ajax js code -->
+    <ul>
+        <li>Home</li>
+        <li>test
+            <ul>
+                <li>subpoint</li>
+            </ul>
+        </li>
+    </ul>
+</aside>
+
+<!-- main pad iframe -->
+<iframe src="http://localhost:9001/p/hallo" id="pad">
