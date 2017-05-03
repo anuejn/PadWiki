@@ -2,5 +2,8 @@
   "name": "ep_padwiki",
   "version": "0.0.1",
   "description": "A simple sidebar for etherpad lite which adds wiki-like functionality.",
-  "author": "nein (Jaro Habiger) <jarohabiger@googlemail.com>"
+  "author": "nein (Jaro Habiger) <jarohabiger@googlemail.com>",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
 }

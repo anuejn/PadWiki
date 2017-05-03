@@ -4,7 +4,8 @@
       "name": "PadWiki",
 
       "hooks": {
-        "expressCreateServer": "ep_padwiki/index"
+        "expressCreateServer": "ep_padwiki/js/express",
+        "socketio": "ep_padwiki/js/socketio"
       }
     }
   ]

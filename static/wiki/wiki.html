@@ -1,0 +1,38 @@
+<!DOCTYE html>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Loading Wiki</title>
+
+<link rel="stylesheet" href="/static_wiki/wiki.css">
+
+<script type="text/javascript" src="../socket.io/socket.io.js"></script>
+<script src="/static_wiki/wiki.js"></script>
+
+
+
+<!-- first loading... -->
+<div id="loading" style="display: none">
+    Loading...
+    <div id="error">
+        It looks like something went wrong :(. <br> Try to reload the page, check your internet conectivity and make shure
+        JavaScript is enabled.
+    </div>
+</div>
+
+
+<!-- the pad listing sidebar -->
+<aside>
+    <header>
+        <h1 id="wiki-title"><img src="/static_wiki/icons/pencil.svg" style="padding-left: 10px;height: inherit;"></h1>
+        <h2>PadWiki</h2>
+        <input type="search" placeholder="search..." id="search">
+    </header>
+
+    <ul id="pages">
+    </ul>
+</aside>
+
+<!-- main pad iframe -->
+<iframe src="" id="pad" name="pad">
