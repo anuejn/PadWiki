@@ -1,10 +1,32 @@
-window.onload = () => {
+
+
+var state = null;
+var firstUpdate = true;
+window.onload = function() {
+    // the main editing handler
+    document.getElementsByTagName("aside")[0].onclick = function(event) {
+        if(event.target.nodeName == "EDIT") {
+            // edit title
+            if(event.target.parentNode.nodeName == "H1") {
+                var newTitle = prompt("New Title:", state.title);
+                if(newTitle) {
+                    state.title = newTitle;
+                    socket.emit('wiki.update', state);
+                }
+            }
+        }
+    }
+
     // setup all the socketio stuff...
     socket = io();
     socket.on('wiki.update:' + getWikiId(), function (updateEvent) {
         setTitle(updateEvent.title);
         setPages(updateEvent.pages);
-        viewPad(updateEvent.pages[0].padId);
+        if(firstUpdate) {
+            viewPad(updateEvent.pages[0].padId);
+            firstUpdate = false;
+        }
+        state = updateEvent;
     });
 
     // really join the wiki
@@ -12,7 +34,7 @@ window.onload = () => {
 }
 
 function setPagesHTML(pagesHTML) {
-    document.getElementById("pages").outerHTML = pagesHTML;
+    document.getElementsByTagName("ul")[0].outerHTML = pagesHTML;
 }
 
 function setPages(pagesList) {
@@ -41,6 +63,6 @@ function viewPad(padId) {
 }
 
 function setTitle(title) {
-    document.getElementById("wiki-title").innerHTML = title;
-    document.getElementsByTagName("title")[0].innerHTML = title + ' Wiki <img src="/static_wiki/icons/pencil.svg" style="padding-left: 10px;height: inherit;">';
+    document.getElementById("wiki-title").innerHTML = title + '<edit>';
+    document.getElementsByTagName("title")[0].innerHTML = title + ' Wiki';
 }

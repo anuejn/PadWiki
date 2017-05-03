@@ -19,6 +19,25 @@ li>a {
     text-decoration: none;
 }
 
+/* define the menu operators */
+edit {
+    background-image: url(/static_wiki/icons/pencil.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    height: .8em;
+    width: 1em;
+
+    opacity: .5;
+
+    display: inline-block;
+
+    position: absolute;
+    right: 1em;
+    margin-top: .1em;
+}
+
 
 
 /* desktop rules */
