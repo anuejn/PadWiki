@@ -14,14 +14,25 @@ iframe {
     overflow: hidden;
 }
 
-li>a {
-    color: white;
-    text-decoration: none;
+li {
+    cursor: pointer;
+}
+
+.add {
+    opacity: .5;
+    list-style: none;
+    padding-left: 0;
+    position: relative;
+    left: -1.2em;
+}
+.add add {
+    opacity: 1;
+    left: 0;
+    position: relative;
 }
 
 /* define the menu operators */
-edit {
-    background-image: url(/static_wiki/icons/pencil.svg);
+edit, add, remove{
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -34,19 +45,34 @@ edit {
     display: inline-block;
 
     position: absolute;
+    margin-top: .2em;
+
+    cursor: pointer;
+}
+
+add {
+    background-image: url(/static_wiki/icons/plus.svg);
+    right: 3em;
+}
+
+remove {
+    background-image: url(/static_wiki/icons/trashcan.svg);
+    right: 2em;
+}
+
+edit {
+    background-image: url(/static_wiki/icons/pencil.svg);
     right: 1em;
-    margin-top: .1em;
 }
 
 
-
 /* desktop rules */
-@media(min-width: 660px) {
+@media(min-width: 700px) {
     aside {
         position: fixed;
         top: 0;
         left: 0;
-        width: 250px;
+        width: 300px;
         height: 100%;
 
         color: #fff;
@@ -64,6 +90,11 @@ edit {
         text-align: center;
     }
 
+    h1 {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
     aside>header>h2 {
         color: rgba(255, 255, 255, 0.3);
         font-size: 14px;
@@ -73,7 +104,7 @@ edit {
     }
 
     aside>header>input[type=search] {
-        width: 200px;
+        width: 250px;
         margin-top: 20px;
         margin-bottom: 10px;
 
@@ -91,7 +122,15 @@ edit {
     iframe {
         width: 100%;
         height: 100%;
-        padding-left: 250px;
+        padding-left: 300px;
+    }
+
+    aside > ul {
+        padding-left: 2em;
+    }
+
+    ul {
+        padding-left: 1em;
     }
 }
 

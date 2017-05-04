@@ -2,8 +2,6 @@
  * handle the socketio traffic for the sidebar
 */
 
-var crypto = require('crypto')
-
 exports.socketio = function (hook_name, args, cb) {
   // init the socketio stuff
   var io = args.io
@@ -20,8 +18,8 @@ exports.socketio = function (hook_name, args, cb) {
       console.log('someone joined the wiki with id: ' + wikiId)
       db.get(dbKey, function (err, value) {
         if (!value) {
-          value = {'title': wikiId, 'pages': [
-              {'title': 'Home', 'padId': crypto.createHash('md5').update(wikiId).digest('hex')}
+          value = {'title': wikiId, 'pads': [
+              {'title': 'Home', 'id': 'wiki:' + wikiId + '.home'}
             ]
           }
         }
