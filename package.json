@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git://github.com/jatha/padwiki.git"
   },
-  "license" : "(ISC OR GPL-3.0)",
+  "license" : "GPL-3.0",
   "dependencies": {
     "express": "^4.15.2"
   }
