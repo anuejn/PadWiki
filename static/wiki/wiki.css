@@ -65,6 +65,10 @@ edit {
     right: 1em;
 }
 
+.grey {
+    opacity: .5;
+}
+
 
 /* desktop rules */
 @media(min-width: 700px) {

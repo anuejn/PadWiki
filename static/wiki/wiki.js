@@ -1,5 +1,7 @@
 var state = null
 window.onload = function () {
+  console.clear();
+
   // the main editing handler
   document.getElementsByTagName('aside')[0].onclick = function (event) {
     var nodeName = event.target.nodeName
@@ -17,20 +19,20 @@ window.onload = function () {
     // handle pad edit actions
     if (parentNodeName == 'LI') {
       if (nodeName == 'EDIT') {
-        var newTitle = prompt('New Pad Title:', getTitleByPadId(padId));
+        var newTitle = prompt('New Pad Title:', getTitleByPadId(padId, state.pads));
         if (newTitle) {
-          setTitleByPadId(padId, newTitle);
+          setTitleByPadId(padId, newTitle, state.pads);
           socket.emit('wiki.update', state)
         }
       } else if (nodeName == 'ADD') {
         var newTitle = prompt('New Pad Title:', '');
         if (newTitle) {
-          addChildToPad(padId, newTitle);
+          addChildToPad(padId, newTitle, state.pads);
           socket.emit('wiki.update', state)
         }
       } else if (nodeName == 'REMOVE') {
-        if (window.confirm('Do you really want to delete the pad "' + getTitleByPadId(padId) + '"') == true) {
-          removePad(padId);
+        if (window.confirm('Do you really want to delete the pad "' + getTitleByPadId(padId, state.pads) + '" and all its sub pads?') == true) {
+          removePad(padId, state.pads);
           socket.emit('wiki.update', state)
         }
       }
@@ -46,9 +48,20 @@ window.onload = function () {
     }
   }
 
+  // search event
   document.getElementById('search').oninput = function() {
-    search_state = state.splice();
-    
+    var string = document.getElementById('search').value;
+    console.log(string);
+
+    var search_list = JSON.parse(JSON.stringify(state.pads));
+    var keep = [];
+    search(string, state.pads, keep);
+
+    if(string) {
+      setpads(removeOtherPads(keep, search_list));
+    } else {
+      setpads(state.pads);
+    }
   }
 
   // setup all the socketio stuff...
@@ -91,10 +104,6 @@ function padsToHtml (padsList, isRecursion) {
 }
 
 function getTitleByPadId(padId, padsList) {
-  if(!padsList) {
-    padsList = state.pads;
-  }
-
   var res = false;
   padsList.forEach(function(pad) {
     if(pad.id == padId) {
@@ -111,10 +120,6 @@ function getTitleByPadId(padId, padsList) {
 }
 
 function setTitleByPadId(padId, title, padsList) {
-  if(!padsList) {
-    padsList = state.pads;
-  }
-
   padsList.forEach(function(pad) {
     if(pad.id == padId) {
       pad.title = title;
@@ -125,10 +130,6 @@ function setTitleByPadId(padId, title, padsList) {
 }
 
 function addChildToPad(padId, padName, padsList) {
-  if(!padsList) {
-    padsList = state.pads;
-  }
-
   if(padId == 'add') {
       padsList.push({'title': padName, 'id': encodeURIComponent(padName)});
       return;
@@ -139,7 +140,7 @@ function addChildToPad(padId, padName, padsList) {
       if(!pad.sub) {
         pad.sub = [];
       }
-      pad.sub.push({'title': padName, 'id': encodeURIComponent(padName)});
+      pad.sub.push({'title': padName, 'id': pad.id + '.' + encodeURIComponent(padName)});
     } else if(pad.sub) {
       addChildToPad(padId, padName, pad.sub);
     }
@@ -147,10 +148,6 @@ function addChildToPad(padId, padName, padsList) {
 }
 
 function removePad(padId, padsList) {
-  if(!padsList) {
-    padsList = state.pads;
-  }
-
   padsList.forEach(function(pad) {
     if(pad.id == padId) {
       padsList.splice(padsList.indexOf(pad), 1);
@@ -158,21 +155,26 @@ function removePad(padId, padsList) {
       removePad(padId, pad.sub);
     }
   });
-
 }
 
-function search(string, padsList) {
-  if(!padsList) {
-    padsList = state.pads;
-  }
+function removeOtherPads(padIds, padsList) {
+  return padsList.filter(function(pad) {
+    return padIds.indexOf(pad) != -1;
+  }).map(function(pad) {
+    pad.sub = removeOtherPads(padIds, pad.sub || []);
+    return pad;
+  });
+}
 
+function search(string, padsList, keep) {
+  var ret = false;
   padsList.forEach(function(pad) {
-    if(pad.title.toLocaleLowerCase().indexOf(string) != -1) {
-      padsList.splice(padsList.indexOf(pad), 1);
-    } else if(pad.sub) {
-      removePad(padId, pad.sub);
+    if(search(string, pad.sub || [], keep) || (pad.title.toLowerCase().indexOf(string.toLowerCase()) != -1)) {
+      keep.push(pad);
+      ret = true;
     }
   });
+  return ret;
 }
 
 function getWikiId () {
@@ -180,7 +182,7 @@ function getWikiId () {
 }
 
 function showPad (padId) {
-  document.getElementById('pad').setAttribute('src', '/p/' + padId)
+  document.getElementById('pad').setAttribute('src', '/p/wiki:' + getWikiId() + '.' + padId)
 }
 
 function setTitle (title) {
