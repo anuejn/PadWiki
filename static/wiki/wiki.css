@@ -76,6 +76,7 @@ edit {
         height: 100%;
 
         color: #fff;
+        overflow-y: auto;
     }
 
     aside>header {

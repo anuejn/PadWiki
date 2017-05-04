@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "A simple sidebar for etherpad lite which adds wiki-like functionality.",
   "author": "nein (Jaro Habiger) <jarohabiger@googlemail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jatha/padwiki.git"
+  },
+  "license" : "(ISC OR GPL-3.0)",
   "dependencies": {
     "express": "^4.15.2"
   }

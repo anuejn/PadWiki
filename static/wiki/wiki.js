@@ -46,6 +46,11 @@ window.onload = function () {
     }
   }
 
+  document.getElementById('search').oninput = function() {
+    search_state = state.splice();
+    
+  }
+
   // setup all the socketio stuff...
   socket = io()
   socket.on('wiki.update:' + getWikiId(), function (updateEvent) {
@@ -154,6 +159,20 @@ function removePad(padId, padsList) {
     }
   });
 
+}
+
+function search(string, padsList) {
+  if(!padsList) {
+    padsList = state.pads;
+  }
+
+  padsList.forEach(function(pad) {
+    if(pad.title.toLocaleLowerCase().indexOf(string) != -1) {
+      padsList.splice(padsList.indexOf(pad), 1);
+    } else if(pad.sub) {
+      removePad(padId, pad.sub);
+    }
+  });
 }
 
 function getWikiId () {
