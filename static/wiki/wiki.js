@@ -13,7 +13,7 @@ window.onload = function () {
 
     // open pad
     if (nodeName == 'LI') {
-      showPad(padId);
+      redirectToPad(padId);
     }
 
     // handle pad edit actions
@@ -64,20 +64,22 @@ window.onload = function () {
     }
   }
 
+  window.onpopstate = function (ev) {
+    showPad(ev.state.padId);
+  }
+
   // setup all the socketio stuff...
   socket = io()
-  socket.on('wiki.update:' + getWikiId(), function (updateEvent) {
+  socket.on('wiki.update:' + getUrlItems().wikiName, function (updateEvent) {
     setTitle(updateEvent.title)
     setpads(updateEvent.pads)
-    if (state == null) {
-      showPad(updateEvent.pads[0].id)
-      firstUpdate = false
-    }
     state = updateEvent
+    // Show the pad
+    showPad(getUrlItems().padId || updateEvent.pads[0].id);
   })
 
   // really join the wiki
-  socket.emit('wiki.join', getWikiId())
+  socket.emit('wiki.join', getUrlItems().wikiName)
 }
 
 function setpadsHTML (padsHTML) {
@@ -177,12 +179,22 @@ function search(string, padsList, keep) {
   return ret;
 }
 
-function getWikiId () {
-  return window.location.href.split('/w/')[1].toLocaleLowerCase()
+function getUrlItems() {
+  var items = location.pathname.split('/');
+  return {
+    wikiName: items[2].toLowerCase(),
+    padId: items[3]
+  };
+}
+
+function redirectToPad (padId) {
+  var title = null; // FIXME find a way to compute a title
+  history.pushState({padId: padId}, null, '/w/' + getUrlItems().wikiName + '/' + padId);
+  showPad(padId);
 }
 
 function showPad (padId) {
-  document.getElementById('pad').setAttribute('src', '/p/wiki:' + getWikiId() + '.' + padId)
+  document.getElementById('pad').setAttribute('src', '/p/wiki:' + getUrlItems().wikiName + '.' + padId)
 }
 
 function setTitle (title) {
